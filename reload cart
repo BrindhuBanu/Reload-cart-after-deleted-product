@@ -1,0 +1,32 @@
+/* 
+// First create a child theme 
+// In a child theme add the code into functions.php
+*/
+
+add_action('wp_footer', 'check_cart_product_removed'); // Add our code in the footer
+
+function check_cart_product_removed() {
+
+    if (is_cart()) { ?> // Check the page is cart page
+
+        <script>
+
+            jQuery(document).ready(function($)
+                {
+                    var initialCartCount = $('.woocommerce-cart-form__cart-item').length;  // Count the product in cart
+                
+                    $(document.body).on('updated_cart_totals', function() {
+                  
+                         var cartItemCount = $('.woocommerce-cart-form__cart-item').length; // Count the product after update triggered by woocommerce
+
+                         if (cartItemCount < initialCartCount) { // Check the product count before update and after if it is less reload the page.
+                             
+                              location.reload();
+                         }
+                     });
+                });
+      </script>
+   
+ <?php 
+}
+}
